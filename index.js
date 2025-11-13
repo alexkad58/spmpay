@@ -1,55 +1,66 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+import { SPWorlds } from "spworlds";
+
+dotenv.config();
+
 const app = express();
 const PORT = 3000;
 
-import dotenv from "dotenv";
-dotenv.config()
+// Чтобы работали относительные пути
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-import { SPWorlds } from 'spworlds';
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public"))); // папка для CSS/JS/картинок
+
+// Инициализация API
 const api = new SPWorlds({ id: process.env.ID, token: process.env.TOKEN });
-
 const pong = await api.ping();
-console.log(pong);
+console.log("SPWorlds API:", pong);
 
-// Главная страница — генерирует ссылку оплаты и редиректит
-app.get("/", async (req, res) => {
+// Главная страница — форма оплаты
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "index.html"));
+});
+
+// Обработка оплаты
+app.post("/pay", async (req, res) => {
+  const { name, count, price } = req.body;
+
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+  const successUrl = `${baseUrl}/success`;
+
   try {
-    const baseUrl = `${req.protocol}://${req.get("host")}`;
-    const successUrl = `${baseUrl}/success`;
-    
-    // Здесь ты обращаешься к стороннему API оплаты
     const paymentUrl = await api.initPayment({
-        items: [
-            {
-                name: 'SomeName',
-                count: '1',
-                price: '1',
-                comment: 'SomeComment'
-            }
-        ],
-        redirectUrl: successUrl,
-        webhookUrl: 'https://api.example.com/webhook',
-        data: 'SomeString'
+      items: [
+        {
+          name,
+          count,
+          price,
+          comment: "Оплата через SPPay",
+        },
+      ],
+      redirectUrl: successUrl,
+      webhookUrl: `${baseUrl}/webhook`, // можешь потом добавить обработку
+      data: "SomeString",
     });
-    console.log(paymentUrl);
-    // Перенаправляем пользователя на оплату
+
     res.redirect(paymentUrl.url);
   } catch (err) {
-    console.error(err);
+    console.error("Ошибка при создании платежа:", err);
     res.status(500).send("Ошибка при создании платежа");
   }
 });
 
 // Страница успеха
 app.get("/success", (req, res) => {
-  res.send(`
-    <html>
-      <body style="font-family: sans-serif; text-align: center; margin-top: 100px;">
-        <h1>✅ Оплата прошла успешно!</h1>
-        <p>Спасибо за покупку.</p>
-      </body>
-    </html>
-  `);
+  res.sendFile(path.join(__dirname, "views", "success.html"));
 });
 
-app.listen(PORT, () => console.log(`Сервер запущен: http://localhost:${PORT}`));
+// Запуск сервера
+app.listen(PORT, () => console.log(`✅ Сервер запущен: http://localhost:${PORT}`));
