@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 // Обработка оплаты
 app.post("/pay", async (req, res) => {
-  const { name, count, price } = req.body;
+  const { name, price } = req.body;
 
   const baseUrl = `${req.protocol}://${req.get("host")}`;
   const successUrl = `${baseUrl}/success`;
@@ -40,9 +40,9 @@ app.post("/pay", async (req, res) => {
       items: [
         {
           name,
-          count,
+          count: 1,
           price,
-          comment: "Оплата через SPPay",
+          comment: "Оплата через SP Pay",
         },
       ],
       redirectUrl: successUrl,
@@ -63,4 +63,4 @@ app.get("/success", (req, res) => {
 });
 
 // Запуск сервера
-app.listen(PORT, () => console.log(`✅ Сервер запущен: http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`✅ Сервер запущен`));

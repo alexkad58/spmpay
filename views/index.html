@@ -6,14 +6,53 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <div class="container">
+  <div class="form-container">
+    <div class="form-header">
+        <h2>SP Pay</h2>
+        <p>Оплата на счет sadomia</p>
+    </div>
+
     <form action="/pay" method="POST">
-      <h2>Введите данные товара</h2>
-      <input type="text" name="name" placeholder="Название товара" required />
-      <input type="number" name="count" placeholder="Количество" min="1" required />
-      <input type="number" name="price" placeholder="Цена (АР)" min="1" required />
-      <button type="submit">Оплатить</button>
+        <div class="form-group">
+            <label for="name">Товар</label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                placeholder="Название товара" 
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="price">Стоимость</label>
+            <div class="price-wrapper">
+                <input 
+                    type="number" 
+                    id="price" 
+                    name="price" 
+                    placeholder="0" 
+                    required
+                >
+                <div class="price-suffix">
+                    <img 
+                        src="./images/dimond_ore_icon.png" 
+                        alt="Diamond Ore"
+                    >
+                    <span>АР</span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit">
+            <!-- <img 
+                src="./images/dimond_ore_icon.png" 
+                alt="Diamond"
+            > -->
+            Оплатить
+        </button>
     </form>
   </div>
 </body>
 </html>
+

@@ -6,10 +6,21 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <div class="success">
-    <h1>✅ Оплата прошла успешно!</h1>
-    <p>Спасибо за покупку.</p>
-    <a href="/">Вернуться на главную</a>
-  </div>
+  <div class="success-container">
+        <div class="success-icon">
+            <svg class="checkmark" viewBox="0 0 52 52">
+                <path d="M14 27l7 7 16-16"/>
+            </svg>
+        </div>
+
+        <h1>Оплата успешна!</h1>
+        <p class="success-message">
+            Ваш платёж обработан.
+        </p>
+
+        <div class="button-group">
+            <a href="/" class="primary-button">Вернуться на страницу оплаты</a>
+        </div>
+    </div>
 </body>
 </html>
