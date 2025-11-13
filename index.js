@@ -28,7 +28,8 @@ app.post("/pay", async (req, res) => {
   const { name, price } = req.body;
 
   const baseUrl = `${req.protocol}://${req.get("host")}`;
-  const successUrl = `${baseUrl}/success`;
+  // const successUrl = `${baseUrl}/success`;
+  const successUrl = `https://sp-pay.ru/success`
 
   try {
     const paymentUrl = await api.initPayment({
