@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { SPWorlds } from "spworlds";
-import { sendMessage } from "./tg";
+import { sendMessage } from "./tg.js";
 
 dotenv.config();
 
