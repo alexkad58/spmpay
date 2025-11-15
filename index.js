@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { SPWorlds } from "spworlds";
+import { sendMessage } from "./tg";
 
 dotenv.config();
 
@@ -42,8 +43,9 @@ app.post("/pay", async (req, res) => {
         },
       ],
       redirectUrl: successUrl,
-      webhookUrl: `${baseUrl}/webhook`,
-      data: "SomeString",
+      // webhookUrl: `${baseUrl}/webhook`,
+      webhookUrl: 'https://sp-pay.ru/success/webhook',
+      data: name,
     });
 
     res.redirect(paymentUrl.url);
@@ -55,6 +57,14 @@ app.post("/pay", async (req, res) => {
 
 app.get("/success", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "success.html"));
+});
+
+app.post('/webhook', (req, res) => {
+  const webhookData = req.body;
+  const message = `*Оплата через SP Pay*\n\nплательщик - *${webhookData.payer}*\nтовар - *${webhookData.data}*\nсумма - *${webhookData.amount} АР*`
+  sendMessage(message)
+
+  res.status(200).send('Webhook received and processed successfully');
 });
 
 app.listen(PORT, () => console.log(`✅ Сервер запущен`));
