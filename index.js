@@ -61,6 +61,7 @@ app.get("/success", (req, res) => {
 
 app.post('/webhook', (req, res) => {
   const webhookData = req.body;
+  console.log(webhookData)
   const message = `*Оплата через SP Pay*\n\nплательщик \\- *${webhookData.payer}*\nтовар \\- *${webhookData.data}*\nсумма \\- *${webhookData.amount} АР*`
   sendMessage(message)
 
