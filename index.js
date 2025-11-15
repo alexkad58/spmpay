@@ -44,7 +44,7 @@ app.post("/pay", async (req, res) => {
       ],
       redirectUrl: successUrl,
       // webhookUrl: `${baseUrl}/webhook`,
-      webhookUrl: 'https://sp-pay.ru/success/webhook',
+      webhookUrl: 'https://sp-pay.ru/webhook',
       data: name,
     });
 
