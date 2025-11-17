@@ -63,7 +63,9 @@ app.get("/success", (req, res) => {
 
 app.post('/webhook', (req, res) => {
   const webhookData = req.body;
-  console.log(webhookData)
+  isValid = api.validateHash(webhookData, req.headers['X-Body-Hash'])
+  if (!isValid) return log(`Не валидный вебхук: ${JSON.stringify(webhookData)}`)
+
   const message = `*Оплата через SP Pay*\n\nплательщик - *${webhookData.payer}*\nтовар - *${webhookData.data}*\nсумма - *${webhookData.amount} АР*`
   sendMessage(message)
 
