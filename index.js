@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { SPWorlds } from "spworlds";
-import { sendMessage } from "./tg.js";
+import { sendMessage, log } from "./tg.js";
 
 dotenv.config();
 
@@ -23,6 +23,7 @@ console.log("SPWorlds API:", pong);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
+  log(`Кто-то зашёл на сайт.`)
 });
 
 app.post("/pay", async (req, res) => {
@@ -51,6 +52,7 @@ app.post("/pay", async (req, res) => {
     res.redirect(paymentUrl.url);
   } catch (err) {
     console.error("Ошибка при создании платежа:", err);
+    log(`Ошибка при создании платежа: ${err}`)
     res.status(500).send("Ошибка при создании платежа");
   }
 });

@@ -21,6 +21,8 @@
                 id="name" 
                 name="name" 
                 placeholder="Название товара" 
+                minlength="3" 
+                maxlength="64"
                 required
             >
         </div>
@@ -32,7 +34,9 @@
                     type="number" 
                     id="price" 
                     name="price" 
-                    placeholder="0" 
+                    placeholder="0"
+                    min="1" 
+                    max="1728"
                     required
                 >
                 <div class="price-suffix">
@@ -46,10 +50,6 @@
         </div>
 
         <button type="submit">
-            <!-- <img 
-                src="./images/dimond_ore_icon.png" 
-                alt="Diamond"
-            > -->
             Оплатить
         </button>
     </form>
