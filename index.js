@@ -4,6 +4,8 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { SPWorlds } from "spworlds";
 import { sendMessage, log } from "./tg.js";
+import cookieParser from "cookie-parser";
+import { v4 as uuid } from "uuid";
 
 dotenv.config();
 
@@ -16,14 +18,27 @@ const __dirname = path.dirname(__filename);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 
 const api = new SPWorlds({ id: process.env.ID, token: process.env.TOKEN });
 const pong = await api.ping();
 console.log("SPWorlds API:", pong);
 
 app.get("/", (req, res) => {
+  if (!req.cookies.userId) {
+    const id = uuid();
+    
+    res.cookie("userId", id, {
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+      httpOnly: true
+    });
+
+    log(`🆕 Новый пользователь: ${id}`);
+  } else {
+    log(`🔁 Вернувшийся пользователь: ${req.cookies.userId}`);
+  }
+
   res.sendFile(path.join(__dirname, "views", "index.html"));
-  log(`Кто-то зашёл на сайт.`)
 });
 
 app.post("/pay", async (req, res) => {

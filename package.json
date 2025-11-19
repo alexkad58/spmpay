@@ -11,9 +11,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "node-telegram-bot-api": "^0.66.0",
-    "spworlds": "^2.2.2"
+    "spworlds": "^2.2.2",
+    "uuid": "^13.0.0"
   }
 }
